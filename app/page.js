@@ -4,7 +4,7 @@ export default function Home() {
   return (
     <main>
       <SignedOut>
-        <SignInButton />
+        <SignInButton signUpForceRedirectUrl="/welcome" forceRedirectUrl="/welcome" />
       </SignedOut>
       <SignedIn>
         <UserButton />
