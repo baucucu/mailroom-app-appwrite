@@ -36,8 +36,8 @@ export default function Sidebar() {
                 ${isSmallScreen ? (isSidebarOpen ? 'translate-x-0' : '-translate-x-full') : 'translate-x-0'}
                 ${isSmallScreen ? 'w-64' : (isSidebarOpen ? 'w-64' : 'w-16')}
             `}>
-                <div className={`flex h-16 shrink-0 items-center border-b px-4 ${isSmallScreen ? 'justify-end' : 'justify-between'}`}>
-                    {(isSidebarOpen && !isSmallScreen) && <OrganizationSwitcher />}
+                <div className={`flex h-16 shrink-0 items-center border-b px-4 justify-between`}>
+                    {isSidebarOpen && <OrganizationSwitcher className='max-w-16' />}
                     <Button variant="ghost" size="icon" onClick={toggleSidebar} className={isSmallScreen && !isSidebarOpen ? 'ml-auto' : ''}>
                         {isSmallScreen ?
                             <XMarkIcon className="h-6 w-6" /> :
