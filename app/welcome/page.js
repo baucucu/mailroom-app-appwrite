@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation'
 const Onboarding = () => {
     const auth = useAuth();
     const router = useRouter()
-    const { userMemberships } = useOrganizationList();
+    const { userMemberships } = useOrganizationList({ userMemberships: true });
     console.log({ auth, userMemberships })
     if (!auth.isSignedIn) {
         router.push('/')
