@@ -9,11 +9,12 @@ import {
   UserCircleIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
-import { OrganizationSwitcher } from "@clerk/nextjs";
+import { OrganizationSwitcher, useOrganization } from "@clerk/nextjs";
 
 export default function Sidebar() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isSmallScreen, setIsSmallScreen] = useState(false);
+  const { isLoading, organization } = useOrganization();
 
   useEffect(() => {
     const checkScreenSize = () => {
@@ -79,14 +80,14 @@ export default function Sidebar() {
         <nav className="flex-1 overflow-y-auto px-2 py-4">
           <NavItem
             label="Dashboard"
-            href="/123"
+            href={"/" + organization?.id}
             icon={LayoutDashboardIcon}
             isSidebarOpen={isSidebarOpen}
             isSmallScreen={isSmallScreen}
           />
           <NavItem
             label="Users"
-            href="/123/users"
+            href={`/${organization?.id}/users`}
             icon={UserCircleIcon}
             isSidebarOpen={isSidebarOpen}
             isSmallScreen={isSmallScreen}
@@ -95,7 +96,7 @@ export default function Sidebar() {
         <nav className="border-t px-2 py-4">
           <NavItem
             label="Settings"
-            href="/123/settings"
+            href={`/${organization?.id}/settings`}
             icon={Cog6ToothIcon}
             isSidebarOpen={isSidebarOpen}
             isSmallScreen={isSmallScreen}
