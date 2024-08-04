@@ -55,7 +55,7 @@ function AuthState() {
       </SignedIn>
 
       <SignedOut>
-        <SignInButton path="/welcome" />
+        <SignInButton path="/welcome" forceRedirectUrl="/welcome" />
       </SignedOut>
     </div>
   );

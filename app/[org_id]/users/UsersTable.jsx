@@ -94,7 +94,7 @@ function UsersTableRow({ user }) {
       </TableCell>
       <TableCell>{user.publicUserData?.identifier}</TableCell>
       <TableCell>
-        <Badge variant="outline">{user.role}</Badge>
+        <Badge>{user.role.split(":")[1]}</Badge>
       </TableCell>
       {/* <TableCell>
         <Badge variant="danger">Suspended</Badge>

@@ -60,7 +60,13 @@ export default function Sidebar() {
           className={`flex h-16 shrink-0 items-center border-b px-4 justify-between`}
         >
           {isSidebarOpen && (
-            <OrganizationSwitcher className="max-w-16" hidePersonal />
+            <OrganizationSwitcher
+              className="max-w-16"
+              hidePersonal
+              afterSelectOrganizationUrl={(organization) =>
+                `/${organization.id}`
+              }
+            />
           )}
           <Button
             variant="ghost"

@@ -6,7 +6,7 @@
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
-export default function Component({ memberships }) {
+export default function Component({ memberships, setActive }) {
   return (
     <div className="container mx-auto py-12 px-4 sm:px-6 lg:px-8">
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
@@ -18,6 +18,7 @@ export default function Component({ memberships }) {
             id={membership.organization.id}
             role={membership.role}
             desccription={membership.organization.description}
+            setActive={setActive}
           />
         ))}
       </div>
@@ -42,7 +43,11 @@ function AddOrganizationCard() {
   );
 }
 
-function OrganizationCard({ name, id, role, desccription }) {
+function OrganizationCard({ name, id, role, desccription, setActive }) {
+  function changeOrgAndRedirect(id) {
+    setActive({ organization: id });
+    window.location.href = `/${id}`;
+  }
   return (
     <div className="bg-card rounded-lg shadow-md overflow-hidden">
       <div className="flex items-center justify-center h-32 bg-secondary text-secondary-foreground">
@@ -52,8 +57,13 @@ function OrganizationCard({ name, id, role, desccription }) {
         <h3 className="text-lg font-semibold mb-2">{name}</h3>
         <p className="text-muted-foreground">{desccription}</p>
         <div className="flex items-center justify-between mt-4">
-          <Button asChildvariant="outline">
-            <Link href={`/${id}`}>View</Link>
+          <Button
+            asChildvariant="outline"
+            onClick={() => changeOrgAndRedirect(id)}
+          >
+            {/* <Link href={`/${id}`} > */}
+            View
+            {/* </Link> */}
           </Button>
           {/* <Button variant="danger">Leave</Button> */}
         </div>
