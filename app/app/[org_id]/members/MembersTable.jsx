@@ -116,8 +116,7 @@ function InvitationTableRow({ invitation }) {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuItem>Edit</DropdownMenuItem>
-            <DropdownMenuItem>Remove</DropdownMenuItem>
+            <DropdownMenuItem>Revoke</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </TableCell>
