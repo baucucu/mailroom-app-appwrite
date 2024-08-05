@@ -84,7 +84,7 @@ export function InviteUsers() {
 
 
   return (
-    <Dialog open={dialogOpen}>
+    <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
       <Button variant="outline" onClick={() => setDialogOpen(true)}>Invite Users</Button>
       {/* <DialogTrigger asChild>
       </DialogTrigger> */}
@@ -121,9 +121,9 @@ export function InviteUsers() {
                   name={`invites.${index}.role`}
                   render={({ field }) => (
                     <div className="flex items-end space-x-2">
-                      <FormItem>
+                      <FormItem className="min-w-32">
                         {index === 0 && <FormLabel>Role</FormLabel>}
-                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <Select onValueChange={field.onChange} defaultValue={field.value} >
                           <FormControl>
                             <SelectTrigger>
                               <SelectValue placeholder="Select role" />

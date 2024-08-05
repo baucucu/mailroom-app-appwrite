@@ -91,8 +91,8 @@ export default function Sidebar() {
             isSmallScreen={isSmallScreen}
           />
           <NavItem
-            label="Users"
-            href={`/app/${organization?.id}/users`}
+            label="Members"
+            href={`/app/${organization?.id}/members`}
             icon={UserCircleIcon}
             isSidebarOpen={isSidebarOpen}
             isSmallScreen={isSmallScreen}

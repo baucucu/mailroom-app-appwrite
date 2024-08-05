@@ -16,21 +16,12 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 
 import { useOrganization } from "@clerk/nextjs";
 
 import { InviteUsers } from "@/components/component/invite-users";
 
-export default function UsersTable() {
+export default function MembersTable() {
   const { isLoaded, memberships, invitations, organization } = useOrganization({
     organization: true,
     memberships: true,
@@ -40,7 +31,7 @@ export default function UsersTable() {
   return (
     <div className="container mx-auto py-8 px-4 md:px-6">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold">Manage Users</h1>
+        <h1 className="text-2xl font-bold">Manage Members</h1>
         <InviteUsers />
       </div>
       <div className="bg-white rounded-lg shadow-md overflow-hidden">
@@ -64,6 +55,31 @@ export default function UsersTable() {
       </div>
     </div>
   );
+}
+
+function InvitesTableRow({ invite }) {
+  return (
+    <TableRow>
+      <TableCell>
+        <div className="flex items-center gap-3">
+          <Avatar>
+            <AvatarImage src={invite.email} alt={invite.email} />
+            <AvatarFallback>{invite.email[0]}</AvatarFallback>
+          </Avatar>
+          <div>
+            <div className="font-medium">{invite.email}</div>
+            <div className="text-muted-foreground text-sm">
+              {invite.email}
+            </div>
+          </div>
+        </div>
+      </TableCell>
+      <TableCell>{invite.email}</TableCell>
+      <TableCell>
+        <Badge>{invite.role.split(":")[1]}</Badge>
+      </TableCell>
+    </TableRow>
+  )
 }
 
 function UsersTableRow({ user }) {
