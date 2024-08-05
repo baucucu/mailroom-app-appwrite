@@ -1,4 +1,5 @@
 "use client";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -16,6 +17,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 
 import { useOrganization } from "@clerk/nextjs";
 
@@ -28,6 +30,14 @@ export default function MembersTable() {
     invitations: true,
   });
 
+  useEffect(() => {
+    if (isLoaded) {
+      console.log({ invitations })
+    }
+  }, [isLoaded, invitations]);
+
+  const [activeTab, setActiveTab] = useState("memberships");
+
   return (
     <div className="container mx-auto py-8 px-4 md:px-6">
       <div className="flex items-center justify-between mb-6">
@@ -35,48 +45,81 @@ export default function MembersTable() {
         <InviteUsers />
       </div>
       <div className="bg-white rounded-lg shadow-md overflow-hidden">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Name</TableHead>
-              <TableHead>Email</TableHead>
-              <TableHead>Role</TableHead>
-              {/* <TableHead>Status</TableHead> */}
-              <TableHead>Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {memberships?.data?.length > 0 &&
-              memberships?.data?.map((membership) => (
-                <UsersTableRow key={membership.id} user={membership} />
-              ))}
-          </TableBody>
-        </Table>
+        <Tabs value={activeTab} onValueChange={setActiveTab}>
+          <TabsList className="mb-4">
+            <TabsTrigger value="memberships">Memberships</TabsTrigger>
+            <TabsTrigger value="invitations">Invitations</TabsTrigger>
+          </TabsList>
+          <TabsContent value="memberships">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Name</TableHead>
+                  <TableHead>Email</TableHead>
+                  <TableHead>Role</TableHead>
+                  <TableHead>Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {memberships?.data?.length > 0 &&
+                  memberships?.data?.map((membership) => (
+                    <UsersTableRow key={membership.id} user={membership} />
+                  ))}
+              </TableBody>
+            </Table>
+          </TabsContent>
+          <TabsContent value="invitations">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Email</TableHead>
+                  <TableHead>Role</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {invitations?.data?.length > 0 &&
+                  invitations?.data?.map((invitation) => (
+                    <InvitationTableRow key={invitation.id} invitation={invitation} />
+                  ))}
+              </TableBody>
+            </Table>
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );
 }
 
-function InvitesTableRow({ invite }) {
+function InvitationTableRow({ invitation }) {
+  console.log({ invitation })
+  if (!invitation) {
+    return <p>Loading...</p>
+  }
   return (
     <TableRow>
+      <TableCell>{invitation.emailAddress}</TableCell>
       <TableCell>
-        <div className="flex items-center gap-3">
-          <Avatar>
-            <AvatarImage src={invite.email} alt={invite.email} />
-            <AvatarFallback>{invite.email[0]}</AvatarFallback>
-          </Avatar>
-          <div>
-            <div className="font-medium">{invite.email}</div>
-            <div className="text-muted-foreground text-sm">
-              {invite.email}
-            </div>
-          </div>
-        </div>
+        <Badge>{invitation.role.split(":")[1]}</Badge>
       </TableCell>
-      <TableCell>{invite.email}</TableCell>
       <TableCell>
-        <Badge>{invite.role.split(":")[1]}</Badge>
+        <Badge>
+          {invitation.status}
+        </Badge>
+      </TableCell>
+      <TableCell>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" size="icon">
+              <MoveHorizontalIcon className="h-5 w-5" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem>Edit</DropdownMenuItem>
+            <DropdownMenuItem>Remove</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </TableCell>
     </TableRow>
   )
