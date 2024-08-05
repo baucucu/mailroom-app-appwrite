@@ -16,11 +16,23 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 import { useOrganization } from "@clerk/nextjs";
 
-export default function Component() {
+import { InviteUsers } from "@/components/component/invite-users";
+
+export default function UsersTable() {
   const { isLoaded, memberships, invitations, organization } = useOrganization({
+    organization: true,
     memberships: true,
     invitations: true,
   });
@@ -29,7 +41,7 @@ export default function Component() {
     <div className="container mx-auto py-8 px-4 md:px-6">
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold">Manage Users</h1>
-        <Button size="sm">Add Member</Button>
+        <InviteUsers />
       </div>
       <div className="bg-white rounded-lg shadow-md overflow-hidden">
         <Table>
