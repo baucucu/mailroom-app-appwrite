@@ -18,24 +18,12 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 import { useOrganization } from "@clerk/nextjs";
-import { useEffect } from "react";
 
 export default function Component() {
   const { isLoaded, memberships, invitations, organization } = useOrganization({
     memberships: true,
     invitations: true,
   });
-
-  useEffect(() => {
-    if (organization) {
-      async function getMembers(params) {
-        const members = await organization.getMembers();
-        console.log({ members });
-        getMembers();
-      }
-      console.log({ memberships, invitations, organization });
-    }
-  }, [memberships, invitations, organization]);
 
   return (
     <div className="container mx-auto py-8 px-4 md:px-6">

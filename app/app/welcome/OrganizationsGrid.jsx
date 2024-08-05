@@ -46,7 +46,7 @@ function AddOrganizationCard() {
 function OrganizationCard({ name, id, role, desccription, setActive }) {
   function changeOrgAndRedirect(id) {
     setActive({ organization: id });
-    window.location.href = `/${id}`;
+    window.location.href = `/app/${id}`;
   }
   return (
     <div className="bg-card rounded-lg shadow-md overflow-hidden">

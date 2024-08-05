@@ -46,13 +46,12 @@ export default function Sidebar() {
         className={`
                 ${isSmallScreen ? "fixed inset-y-0 left-0 z-30" : "relative"}
                 flex flex-col border-r bg-background shadow-lg transition-all duration-300 ease-in-out
-                ${
-                  isSmallScreen
-                    ? isSidebarOpen
-                      ? "translate-x-0"
-                      : "-translate-x-full"
-                    : "translate-x-0"
-                }
+                ${isSmallScreen
+            ? isSidebarOpen
+              ? "translate-x-0"
+              : "-translate-x-full"
+            : "translate-x-0"
+          }
                 ${isSmallScreen ? "w-64" : isSidebarOpen ? "w-64" : "w-16"}
             `}
       >
@@ -86,14 +85,14 @@ export default function Sidebar() {
         <nav className="flex-1 overflow-y-auto px-2 py-4">
           <NavItem
             label="Dashboard"
-            href={"/" + organization?.id}
+            href={"/app/" + organization?.id}
             icon={LayoutDashboardIcon}
             isSidebarOpen={isSidebarOpen}
             isSmallScreen={isSmallScreen}
           />
           <NavItem
             label="Users"
-            href={`/${organization?.id}/users`}
+            href={`/app/${organization?.id}/users`}
             icon={UserCircleIcon}
             isSidebarOpen={isSidebarOpen}
             isSmallScreen={isSmallScreen}
@@ -102,7 +101,7 @@ export default function Sidebar() {
         <nav className="border-t px-2 py-4">
           <NavItem
             label="Settings"
-            href={`/${organization?.id}/settings`}
+            href={`/app/${organization?.id}/settings`}
             icon={Cog6ToothIcon}
             isSidebarOpen={isSidebarOpen}
             isSmallScreen={isSmallScreen}
@@ -129,9 +128,8 @@ const NavItem = ({
   return (
     <Link
       href={href}
-      className={`flex gap-3 rounded-md px-2 py-2 text-sm font-medium transition-colors hover:bg-muted hover:text-foreground transition-all duration-300 ease-in-out ${
-        !isSidebarOpen && !isSmallScreen && "justify-center"
-      }`}
+      className={`flex gap-3 rounded-md px-2 py-2 text-sm font-medium transition-colors hover:bg-muted hover:text-foreground transition-all duration-300 ease-in-out ${!isSidebarOpen && !isSmallScreen && "justify-center"
+        }`}
       prefetch={false}
     >
       <Icon

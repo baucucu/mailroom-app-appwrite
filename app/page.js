@@ -1,7 +1,7 @@
 "use client";
 import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import Link from "next/link";
-import { HomeIcon } from "@heroicons/react/24/outline";
+import { useOrganization } from "@clerk/nextjs";
 
 export default function Home() {
   return (
@@ -40,11 +40,12 @@ function AppNav() {
 }
 
 function AuthState() {
+  const { isLoaded, organization } = useOrganization();
   return (
     <div className="flex gap-3 align-middle items-center">
       <SignedIn>
         <Link
-          href="/123"
+          href={`/app/${organization?.id}`}
           className={`flex gap-3 rounded-md px-2 py-2 text-sm font-medium hover:bg-muted hover:text-foreground transition-all duration-300 ease-in-out`}
           prefetch={false}
         >
@@ -55,7 +56,7 @@ function AuthState() {
       </SignedIn>
 
       <SignedOut>
-        <SignInButton path="/welcome" forceRedirectUrl="/welcome" />
+        <SignInButton path="/app/welcome" forceRedirectUrl="/app/welcome" />
       </SignedOut>
     </div>
   );
