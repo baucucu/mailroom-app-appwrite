@@ -23,18 +23,14 @@ import { useOrganization } from "@clerk/nextjs";
 
 import { InviteUsers } from "@/components/component/invite-users";
 
+import { EllipsisHorizontalCircleIcon } from "@heroicons/react/24/outline";
+
 export default function MembersTable() {
   const { isLoaded, memberships, invitations, organization } = useOrganization({
     organization: true,
     memberships: true,
     invitations: true,
   });
-
-  useEffect(() => {
-    if (isLoaded) {
-      console.log({ invitations })
-    }
-  }, [isLoaded, invitations]);
 
   const [activeTab, setActiveTab] = useState("memberships");
 
@@ -81,7 +77,10 @@ export default function MembersTable() {
               <TableBody>
                 {invitations?.data?.length > 0 &&
                   invitations?.data?.map((invitation) => (
-                    <InvitationTableRow key={invitation.id} invitation={invitation} />
+                    <InvitationTableRow
+                      key={invitation.id}
+                      invitation={invitation}
+                    />
                   ))}
               </TableBody>
             </Table>
@@ -93,9 +92,8 @@ export default function MembersTable() {
 }
 
 function InvitationTableRow({ invitation }) {
-  console.log({ invitation })
   if (!invitation) {
-    return <p>Loading...</p>
+    return <p>Loading...</p>;
   }
   return (
     <TableRow>
@@ -104,15 +102,13 @@ function InvitationTableRow({ invitation }) {
         <Badge>{invitation.role.split(":")[1]}</Badge>
       </TableCell>
       <TableCell>
-        <Badge>
-          {invitation.status}
-        </Badge>
+        <Badge>{invitation.status}</Badge>
       </TableCell>
       <TableCell>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" size="icon">
-              <MoveHorizontalIcon className="h-5 w-5" />
+              <EllipsisHorizontalCircleIcon className="h-5 w-5" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
@@ -121,11 +117,10 @@ function InvitationTableRow({ invitation }) {
         </DropdownMenu>
       </TableCell>
     </TableRow>
-  )
+  );
 }
 
 function UsersTableRow({ user }) {
-  console.log({ user });
   let fullName = "";
   let initials = "";
   if (user.publicUserData.firstName && user.publicUserData.lastName) {
@@ -161,7 +156,7 @@ function UsersTableRow({ user }) {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" size="icon">
-              <MoveHorizontalIcon className="h-5 w-5" />
+              <EllipsisHorizontalCircleIcon className="h-5 w-5" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
@@ -171,26 +166,5 @@ function UsersTableRow({ user }) {
         </DropdownMenu>
       </TableCell>
     </TableRow>
-  );
-}
-
-function MoveHorizontalIcon(props) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <polyline points="18 8 22 12 18 16" />
-      <polyline points="6 8 2 12 6 16" />
-      <line x1="2" x2="22" y1="12" y2="12" />
-    </svg>
   );
 }

@@ -1,10 +1,16 @@
-/**
- * v0 by Vercel.
- * @see https://v0.dev/t/n5aJ7JSXC9D
- * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
- */
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
+import {
+  BuildingStorefrontIcon,
+  PlusCircleIcon,
+} from "@heroicons/react/24/outline";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 export default function Component({ memberships, setActive }) {
   return (
@@ -28,18 +34,22 @@ export default function Component({ memberships, setActive }) {
 
 function AddOrganizationCard() {
   return (
-    <div className="bg-card rounded-lg shadow-md overflow-hidden">
-      <div className="flex items-center justify-center h-32 bg-primary text-primary-foreground">
-        <PlusIcon className="w-10 h-10" />
-      </div>
-      <div className="p-4">
+    <Card>
+      <CardHeader>
+        <div className="flex items-center justify-center h-16 bg-primary text-primary-foreground">
+          <PlusCircleIcon className="w-10 h-10" />
+        </div>
+      </CardHeader>
+      <CardContent>
         <h3 className="text-lg font-semibold mb-2">Add Organization</h3>
         <p className="text-muted-foreground">
           Click to add a new organization to your list.
         </p>
+      </CardContent>
+      <CardFooter>
         <Button className="mt-4 w-full">Add Organization</Button>
-      </div>
-    </div>
+      </CardFooter>
+    </Card>
   );
 }
 
@@ -49,74 +59,25 @@ function OrganizationCard({ name, id, role, desccription, setActive }) {
     window.location.href = `/app/${id}`;
   }
   return (
-    <div className="bg-card rounded-lg shadow-md overflow-hidden">
-      <div className="flex items-center justify-center h-32 bg-secondary text-secondary-foreground">
-        <BuildingIcon className="w-10 h-10" />
-      </div>
-      <div className="p-4">
+    <Card className="flex flex-col h-full">
+      <CardHeader>
+        <div className="flex items-center justify-center h-16 bg-secondary text-secondary-foreground">
+          <BuildingStorefrontIcon className="w-10 h-10" />
+        </div>
+      </CardHeader>
+      <CardContent className="flex-grow">
         <h3 className="text-lg font-semibold mb-2">{name}</h3>
         <p className="text-muted-foreground">{desccription}</p>
-        <div className="flex items-center justify-between mt-4">
-          <Button
-            asChildvariant="outline"
-            onClick={() => changeOrgAndRedirect(id)}
-          >
-            {/* <Link href={`/${id}`} > */}
-            View
-            {/* </Link> */}
-          </Button>
-          {/* <Button variant="danger">Leave</Button> */}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function BuildingIcon(props) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <rect width="16" height="20" x="4" y="2" rx="2" ry="2" />
-      <path d="M9 22v-4h6v4" />
-      <path d="M8 6h.01" />
-      <path d="M16 6h.01" />
-      <path d="M12 6h.01" />
-      <path d="M12 10h.01" />
-      <path d="M12 14h.01" />
-      <path d="M16 10h.01" />
-      <path d="M16 14h.01" />
-      <path d="M8 10h.01" />
-      <path d="M8 14h.01" />
-    </svg>
-  );
-}
-
-function PlusIcon(props) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M5 12h14" />
-      <path d="M12 5v14" />
-    </svg>
+      </CardContent>
+      <CardFooter>
+        <Button
+          className="w-full"
+          // variant="outline"
+          onClick={() => changeOrgAndRedirect(id)}
+        >
+          View
+        </Button>
+      </CardFooter>
+    </Card>
   );
 }
