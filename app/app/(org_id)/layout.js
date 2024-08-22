@@ -4,7 +4,7 @@ import AppHeader from "@/components/Appbar";
 import { useState, useEffect } from "react";
 
 export default function Layout({ children }) {
-  const [isScreenSmall, setScreenSmall] = useState(window.innerWidth < 640);
+  const [isScreenSmall, setScreenSmall] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   function toggleSidebarOpen() {
@@ -15,10 +15,11 @@ export default function Layout({ children }) {
   function handleResize() {
     setScreenSmall(window.innerWidth < 640);
   }
-  useEffect(() => {
-    if (window) {
-      window.addEventListener("resize", handleResize);
 
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      window.addEventListener("resize", handleResize);
+      handleResize();
       return () => {
         window.removeEventListener("resize", handleResize);
       };
@@ -26,19 +27,23 @@ export default function Layout({ children }) {
   }, []);
 
   return (
-    <div className="flex h-screen bg-zinc-100">
+    <div className="flex h-screen overflow-hidden bg-zinc-100">
       <Sidebar
         isSidebarOpen={isSidebarOpen}
         toggleSidebarOpen={toggleSidebarOpen}
         isScreenSmall={isScreenSmall}
+        className="fixed left-0 top-0 h-full"
       />
-      <div className="flex flex-col w-full">
+      <div className="flex flex-col flex-grow">
         <AppHeader
           isScreenSmall={isScreenSmall}
           toggleSidebarOpen={toggleSidebarOpen}
           isSidebarOpen={isSidebarOpen}
+          className="fixed top-0 right-0 left-0 z-10"
         />
-        <main className="p-4">{children}</main>
+        <main className="flex-grow overflow-auto p-4">
+          {children}
+        </main>
       </div>
     </div>
   );

@@ -56,7 +56,7 @@ function AddOrganizationCard() {
 function OrganizationCard({ name, id, role, desccription, setActive }) {
   function changeOrgAndRedirect(id) {
     setActive({ organization: id });
-    window.location.href = `/app/${id}`;
+    window.location.href = `/app`;
   }
   return (
     <Card className="flex flex-col h-full">

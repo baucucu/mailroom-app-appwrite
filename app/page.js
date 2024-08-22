@@ -45,7 +45,7 @@ function AuthState() {
     <div className="flex gap-3 align-middle items-center">
       <SignedIn>
         <Link
-          href={`/app/${organization?.id}`}
+          href={`/app`}
           className={`flex gap-3 rounded-md px-2 py-2 text-sm font-medium hover:bg-muted hover:text-foreground transition-all duration-300 ease-in-out`}
           prefetch={false}
         >

@@ -1,30 +1,40 @@
 "use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { usePathname } from 'next/navigation';
 import { Button } from "@/components/ui/button";
 import {
   ChevronDoubleLeftIcon,
   Cog6ToothIcon,
   Bars3Icon,
-  UserCircleIcon,
   XMarkIcon,
+  CreditCardIcon,
+  ShieldCheckIcon
 } from "@heroicons/react/24/outline";
 import { OrganizationSwitcher, useOrganization } from "@clerk/nextjs";
 
+import BillingPage from "./BillingPage";
+
 export default function Sidebar() {
+  const pathname = usePathname();
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isSmallScreen, setIsSmallScreen] = useState(false);
-  const { isLoading, organization } = useOrganization();
+  const [activeTab, setActiveTab] = useState();
+
+  useEffect(() => {
+    setActiveTab(pathname);
+  }, [pathname]);
 
   useEffect(() => {
     const checkScreenSize = () => {
       setIsSmallScreen(window.innerWidth < 1024);
       setIsSidebarOpen(window.innerWidth >= 1024);
     };
-
-    checkScreenSize();
-    window.addEventListener("resize", checkScreenSize);
-
+    // set active tab
+    if (window) {
+      window.addEventListener("resize", checkScreenSize);
+      checkScreenSize();
+    }
     return () => window.removeEventListener("resize", checkScreenSize);
   }, []);
 
@@ -46,13 +56,12 @@ export default function Sidebar() {
         className={`
                 ${isSmallScreen ? "fixed inset-y-0 left-0 z-30" : "relative"}
                 flex flex-col border-r bg-background shadow-lg transition-all duration-300 ease-in-out
-                ${
-                  isSmallScreen
-                    ? isSidebarOpen
-                      ? "translate-x-0"
-                      : "-translate-x-full"
-                    : "translate-x-0"
-                }
+                ${isSmallScreen
+            ? isSidebarOpen
+              ? "translate-x-0"
+              : "-translate-x-full"
+            : "translate-x-0"
+          }
                 ${isSmallScreen ? "w-64" : isSidebarOpen ? "w-64" : "w-16"}
             `}
       >
@@ -64,9 +73,26 @@ export default function Sidebar() {
               className="max-w-16"
               hidePersonal
               afterSelectOrganizationUrl={(organization) =>
-                `/app/${organization.id}`
+                `/app`
               }
-            />
+            >
+              <OrganizationSwitcher.OrganizationProfilePage
+                label="Billing"
+                url="billing"
+                labelIcon={<CreditCardIcon />}
+              >
+                <BillingPage />
+              </OrganizationSwitcher.OrganizationProfilePage>
+
+              {/* You can also pass the content as direct children */}
+              <OrganizationSwitcher.OrganizationProfilePage
+                label="Terms"
+                labelIcon={<ShieldCheckIcon />}
+                url="terms"
+              >
+                <TermsPage />
+              </OrganizationSwitcher.OrganizationProfilePage>
+            </OrganizationSwitcher>
           )}
           <Button
             variant="ghost"
@@ -86,26 +112,28 @@ export default function Sidebar() {
         <nav className="flex-1 overflow-y-auto px-2 py-4">
           <NavItem
             label="Dashboard"
-            href={"/app/" + organization?.id}
+            href={"/app"}
             icon={LayoutDashboardIcon}
             isSidebarOpen={isSidebarOpen}
             isSmallScreen={isSmallScreen}
+            isActive={activeTab === "/app"}
           />
-          <NavItem
+          {/* <NavItem
             label="Members"
-            href={`/app/${organization?.id}/members`}
+            href={`/app/members`}
             icon={UserCircleIcon}
             isSidebarOpen={isSidebarOpen}
             isSmallScreen={isSmallScreen}
-          />
+          /> */}
         </nav>
         <nav className="border-t px-2 py-4">
           <NavItem
             label="Settings"
-            href={`/app/${organization?.id}/settings`}
+            href={`/app/settings`}
             icon={Cog6ToothIcon}
             isSidebarOpen={isSidebarOpen}
             isSmallScreen={isSmallScreen}
+            isActive={activeTab === "/app/settings"}
           />
         </nav>
       </aside>
@@ -125,13 +153,13 @@ const NavItem = ({
   href = "#",
   isSidebarOpen,
   isSmallScreen,
+  isActive,
 }) => {
   return (
     <Link
       href={href}
-      className={`flex gap-3 rounded-md px-2 py-2 text-sm font-medium transition-colors hover:bg-muted hover:text-foreground transition-all duration-300 ease-in-out ${
-        !isSidebarOpen && !isSmallScreen && "justify-center"
-      }`}
+      className={`flex gap-3 rounded-md px-2 py-2 text-sm font-medium transition-colors ${isActive ? "bg-slate-200 text-current" : "text-muted-foreground hover:bg-muted"} transition-all duration-300 ease-in-out ${!isSidebarOpen && !isSmallScreen && "justify-center"
+        }`}
       prefetch={false}
     >
       <Icon
@@ -165,3 +193,12 @@ function LayoutDashboardIcon(props) {
     </svg>
   );
 }
+
+const TermsPage = () => {
+  return (
+    <div>
+      <h1>Custom Terms Page</h1>
+      <p>This is the custom terms page</p>
+    </div>
+  );
+};
